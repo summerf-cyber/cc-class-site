@@ -4,474 +4,741 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Procurable.ai — Should-Cost Intelligence for Aerospace & Manufacturing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy:    #0c1a2b;
-      --navy2:   #132338;
-      --blue:    #1a4f8a;
-      --accent:  #2e86de;
-      --accent2: #1a6dc8;
-      --light:   #f3f6fb;
-      --white:   #ffffff;
-      --gray:    #5f7080;
-      --midgray: #8fa0b2;
-      --border:  #d4dde9;
-      --green:   #0d9f6e;
+      --ink:        #0b0e13;
+      --midnight:   #040a14;
+      --midnight2:  #071224;
+      --blue:       #2563eb;
+      --blue2:      #1d4ed8;
+      --blue-glow:  rgba(37,99,235,0.35);
+      --amber:      #d97706;
+      --amber-lt:   #fbbf24;
+      --paper:      #f9f8f5;
+      --smoke:      #f0ede7;
+      --white:      #ffffff;
+      --gray:       #64748b;
+      --midgray:    #94a3b8;
+      --border:     #e2dcd2;
+      --border-dk:  rgba(255,255,255,0.08);
+      --green:      #059669;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: #1c2b3a;
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--ink);
       background: var(--white);
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    /* ── NAV ─────────────────────────────────────────────────── */
+    /* ── UTILITY ─────────────────────────────────────────── */
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 5%; }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── NAV ─────────────────────────────────────────────── */
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(255,255,255,0.96);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 6%;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
+      padding: 0 5%;
+      transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+    }
+
+    nav.scrolled {
+      background: rgba(4,10,20,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-dk);
     }
 
     .logo {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--navy);
+      font-family: 'Fraunces', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--white);
       text-decoration: none;
       letter-spacing: -0.02em;
     }
 
-    .logo span { color: var(--accent); }
+    .logo em { font-style: normal; color: var(--amber-lt); }
 
-    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
 
     .nav-link {
-      font-size: 0.875rem;
+      font-size: 0.82rem;
       font-weight: 500;
-      color: var(--gray);
+      color: rgba(255,255,255,0.55);
       text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
     }
 
-    .nav-link:hover { color: var(--navy); }
+    .nav-link:hover { color: var(--white); }
 
-    .btn-nav {
-      background: var(--navy);
-      color: var(--white);
-      padding: 9px 20px;
-      border-radius: 6px;
-      font-size: 0.875rem;
+    .nav-cta {
+      font-size: 0.82rem;
       font-weight: 600;
-      text-decoration: none;
-      transition: background 0.2s;
-      cursor: pointer;
-      border: none;
-    }
-
-    .btn-nav:hover { background: var(--blue); }
-
-    /* ── HERO ─────────────────────────────────────────────────── */
-    .hero {
-      background: linear-gradient(160deg, var(--navy) 0%, #0f2540 55%, #173660 100%);
       color: var(--white);
-      padding: 96px 6% 80px;
+      background: var(--blue);
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+      letter-spacing: 0.01em;
     }
 
-    .hero-inner { max-width: 760px; }
+    .nav-cta:hover { background: var(--blue2); }
 
-    .eyebrow {
+    /* ── HERO ─────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background: var(--midnight);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 5% 72px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Dot grid texture */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+
+    /* Blue radial glow from top */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 30%;
+      width: 80vw;
+      height: 80vh;
+      background: radial-gradient(ellipse at center, rgba(37,99,235,0.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.09em;
+      gap: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #6bbfff;
-      margin-bottom: 22px;
+      color: var(--amber-lt);
+      margin-bottom: 32px;
     }
 
-    .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: #6bbfff; }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--amber-lt);
+    }
 
     .hero h1 {
-      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-family: 'Fraunces', serif;
+      font-size: clamp(3rem, 7vw, 6.5rem);
       font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.035em;
-      margin-bottom: 24px;
-      max-width: 680px;
+      font-optical-sizing: auto;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      max-width: 900px;
+      margin-bottom: 32px;
     }
 
-    .hero h1 em { font-style: normal; color: #6bbfff; }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--amber-lt);
+    }
 
     .hero-sub {
-      font-size: clamp(1rem, 1.8vw, 1.15rem);
-      color: rgba(255,255,255,0.72);
-      max-width: 580px;
-      margin-bottom: 36px;
-      line-height: 1.7;
+      font-size: clamp(1rem, 1.6vw, 1.1rem);
+      color: rgba(255,255,255,0.6);
+      max-width: 560px;
+      line-height: 1.75;
+      margin-bottom: 40px;
+      font-weight: 300;
     }
 
     .hero-actions {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       flex-wrap: wrap;
-      margin-bottom: 56px;
+      margin-bottom: 72px;
     }
 
     .btn-primary {
-      background: var(--accent);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
       color: var(--white);
+      background: var(--blue);
+      border: none;
       padding: 13px 28px;
       border-radius: 7px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-      display: inline-block;
       cursor: pointer;
-      border: none;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.01em;
     }
 
-    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-primary:hover { background: var(--blue2); transform: translateY(-1px); }
 
-    .btn-ghost {
+    .btn-outline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
       background: transparent;
-      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.2);
       padding: 12px 28px;
       border-radius: 7px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      text-decoration: none;
-      border: 1.5px solid rgba(255,255,255,0.3);
-      transition: border-color 0.2s, background 0.2s;
-      display: inline-block;
       cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
     }
 
-    .btn-ghost:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.07); }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.55); color: var(--white); background: rgba(255,255,255,0.05); }
 
-    .hero-metrics {
-      display: flex;
-      gap: 0;
-      border-top: 1px solid rgba(255,255,255,0.12);
+    /* Stat bar */
+    .hero-stats {
+      border-top: 1px solid var(--border-dk);
       padding-top: 40px;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
     }
 
-    .metric {
+    @media (max-width: 600px) { .hero-stats { grid-template-columns: 1fr 1fr; } }
+
+    .hero-stat {
       padding-right: 40px;
-      margin-right: 40px;
-      border-right: 1px solid rgba(255,255,255,0.12);
+      border-right: 1px solid var(--border-dk);
     }
 
-    .metric:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+    .hero-stat:last-child { border-right: none; }
 
-    .metric-number {
-      display: block;
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--white);
+    .hero-stat-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--amber-lt);
       letter-spacing: -0.04em;
       line-height: 1;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      display: block;
     }
 
-    .metric-number span { color: #6bbfff; }
+    .hero-stat-label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.4;
+      font-weight: 400;
+    }
 
-    .metric-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.4; max-width: 140px; }
-
-    /* ── PAIN ─────────────────────────────────────────────────── */
-    .pain { background: var(--light); padding: 88px 6%; }
-
-    .pain-inner { max-width: 1100px; margin: 0 auto; }
+    /* ── PAIN / QUOTES ────────────────────────────────────── */
+    .pain { background: var(--paper); padding: 100px 0; }
 
     .section-tag {
-      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 10px;
+      color: var(--blue);
+      margin-bottom: 14px;
     }
 
     .section-h {
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 800;
-      color: var(--navy);
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      font-optical-sizing: auto;
+      color: var(--ink);
       letter-spacing: -0.025em;
-      line-height: 1.2;
-      max-width: 600px;
-      margin-bottom: 14px;
+      line-height: 1.15;
+      max-width: 640px;
+      margin-bottom: 16px;
     }
 
     .section-sub {
       font-size: 1rem;
       color: var(--gray);
-      max-width: 540px;
-      margin-bottom: 52px;
+      max-width: 520px;
+      margin-bottom: 56px;
+      font-weight: 400;
       line-height: 1.7;
     }
 
+    /* Pull quote strip */
+    .pull-quote-strip {
+      background: var(--ink);
+      padding: 56px 5%;
+      text-align: center;
+    }
+
+    .pull-quote-strip blockquote {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-weight: 400;
+      font-style: italic;
+      font-optical-sizing: auto;
+      color: var(--white);
+      max-width: 860px;
+      margin: 0 auto 16px;
+      line-height: 1.4;
+    }
+
+    .pull-quote-strip cite {
+      font-family: 'Space Mono', monospace;
+      font-style: normal;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* Quote grid */
     .quotes-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
       margin-bottom: 48px;
     }
 
     .quote-card {
       background: var(--white);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: 8px;
-      padding: 22px 20px;
+      padding: 28px 26px;
+      transition: background 0.2s;
     }
 
+    .quote-card:hover { background: #fdfcfa; }
+
     .quote-card p {
-      font-size: 0.93rem;
-      color: #2c3e50;
+      font-family: 'Fraunces', serif;
       font-style: italic;
-      line-height: 1.6;
-      margin-bottom: 12px;
+      font-optical-sizing: auto;
+      font-size: 0.97rem;
+      color: #2d3748;
+      line-height: 1.65;
+      margin-bottom: 14px;
+      font-weight: 400;
     }
 
     .quote-attr {
-      font-size: 0.76rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
       color: var(--midgray);
-      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.07em;
     }
 
-    .pain-bridge {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 36px 40px;
+    /* Before / After */
+    .before-after {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: start;
-      margin-bottom: 32px;
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 40px;
     }
 
-    @media (max-width: 700px) {
-      .pain-bridge { grid-template-columns: 1fr; gap: 28px; padding: 28px 24px; }
-    }
+    @media (max-width: 680px) { .before-after { grid-template-columns: 1fr; } }
 
-    .pain-bridge h3 {
-      font-size: 0.82rem;
+    .ba-col { background: var(--white); padding: 36px 32px; }
+    .ba-col.dark { background: var(--ink); }
+
+    .ba-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
       font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .pain-bridge h3.red { color: #c0392b; }
-    .pain-bridge h3.green { color: var(--green); }
+    .ba-label.before { color: #b91c1c; }
+    .ba-label.after  { color: #059669; }
 
-    .pain-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .ba-label::before {
+      content: '';
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
 
-    .pain-list li {
+    .ba-label.before::before { background: #b91c1c; }
+    .ba-label.after::before  { background: #059669; }
+
+    .ba-list { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+
+    .ba-list li {
+      font-size: 0.88rem;
+      line-height: 1.55;
       display: flex;
       gap: 10px;
-      font-size: 0.9rem;
-      color: var(--gray);
-      line-height: 1.5;
       align-items: flex-start;
     }
 
-    .pain-list li .icon { flex-shrink: 0; margin-top: 1px; font-size: 0.85rem; }
+    .ba-col .ba-list li { color: var(--gray); }
+    .ba-col.dark .ba-list li { color: rgba(255,255,255,0.72); }
 
-    .roi-nudge {
-      background: linear-gradient(135deg, #0c1a2b, #1a4f8a);
+    .ba-list li .icon { flex-shrink: 0; margin-top: 1px; font-size: 0.82rem; }
+
+    /* ROI nudge banner */
+    .roi-banner {
+      background: var(--midnight);
+      border: 1px solid rgba(37,99,235,0.3);
       border-radius: 12px;
-      padding: 32px 40px;
+      padding: 28px 36px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 24px;
       flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
     }
 
-    .roi-nudge-text h4 {
-      font-size: 1.1rem;
-      font-weight: 700;
+    .roi-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at left center, rgba(37,99,235,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .roi-banner-text h4 {
+      font-family: 'Fraunces', serif;
+      font-optical-sizing: auto;
+      font-size: 1.15rem;
+      font-weight: 600;
       color: var(--white);
-      margin-bottom: 6px;
+      margin-bottom: 5px;
+      letter-spacing: -0.015em;
     }
 
-    .roi-nudge-text p {
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.6);
-    }
+    .roi-banner-text p { font-size: 0.84rem; color: rgba(255,255,255,0.5); }
 
-    /* ── USE CASES ────────────────────────────────────────────── */
-    .usecases { background: var(--white); padding: 88px 6%; }
-
-    .usecases-inner { max-width: 1100px; margin: 0 auto; }
+    /* ── USE CASES ────────────────────────────────────────── */
+    .usecases { background: var(--white); padding: 100px 0; }
 
     .use-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
     }
 
     .use-card {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 32px 28px;
-      transition: box-shadow 0.2s, transform 0.2s;
+      background: var(--white);
+      padding: 36px 32px;
+      position: relative;
+      transition: background 0.2s;
     }
 
-    .use-card:hover { box-shadow: 0 6px 24px rgba(13,27,42,0.08); transform: translateY(-2px); }
+    .use-card:hover { background: var(--paper); }
 
-    .use-tag {
-      display: inline-block;
+    .use-num {
+      font-family: 'Space Mono', monospace;
       font-size: 0.7rem;
       font-weight: 700;
+      color: var(--amber);
       letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: #e8f0fb;
-      color: var(--accent);
-      padding: 4px 10px;
-      border-radius: 4px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
-    .use-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; line-height: 1.3; }
+    .use-card h3 {
+      font-family: 'Fraunces', serif;
+      font-optical-sizing: auto;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.25;
+      margin-bottom: 12px;
+      letter-spacing: -0.015em;
+    }
 
-    .use-card p { font-size: 0.88rem; color: var(--gray); line-height: 1.65; margin-bottom: 18px; }
+    .use-card p { font-size: 0.86rem; color: var(--gray); line-height: 1.65; margin-bottom: 18px; font-weight: 400; }
 
-    .use-outcome { font-size: 0.82rem; font-weight: 700; color: var(--green); display: flex; align-items: center; gap: 6px; }
+    .use-outcome {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--green);
+      letter-spacing: 0.04em;
+      font-weight: 400;
+    }
 
-    /* ── OBJECTIONS ───────────────────────────────────────────── */
-    .objections { background: var(--navy); color: var(--white); padding: 88px 6%; }
+    /* ── OBJECTIONS ───────────────────────────────────────── */
+    .objections { background: var(--midnight); padding: 100px 0; }
 
-    .objections-inner { max-width: 1100px; margin: 0 auto; }
+    .objections .section-h { color: var(--white); }
+    .objections .section-sub { color: rgba(255,255,255,0.45); }
 
-    .objections .section-h { color: var(--white); max-width: 560px; }
-    .objections .section-sub { color: rgba(255,255,255,0.6); }
-
-    .obj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .obj-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+      background: var(--border-dk);
+      border: 1px solid var(--border-dk);
+      border-radius: 14px;
+      overflow: hidden;
+    }
 
     .obj-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 26px 24px;
+      background: rgba(255,255,255,0.03);
+      padding: 28px 26px;
+      transition: background 0.2s;
     }
 
-    .obj-q { font-size: 0.82rem; color: rgba(255,255,255,0.45); font-style: italic; margin-bottom: 10px; line-height: 1.5; }
+    .obj-card:hover { background: rgba(255,255,255,0.06); }
 
-    .obj-a { font-size: 0.9rem; color: rgba(255,255,255,0.88); line-height: 1.6; }
+    .obj-q {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 12px;
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+    }
 
-    .obj-a strong { color: #6bbfff; font-weight: 600; }
+    .obj-a { font-size: 0.88rem; color: rgba(255,255,255,0.82); line-height: 1.65; font-weight: 400; }
 
-    /* ── INTEGRATION ──────────────────────────────────────────── */
-    .integration { background: var(--light); padding: 72px 6%; text-align: center; }
+    .obj-a strong { color: var(--amber-lt); font-weight: 600; }
 
-    .integration-inner { max-width: 900px; margin: 0 auto; }
+    /* ── INTEGRATION ──────────────────────────────────────── */
+    .integration { background: var(--paper); padding: 88px 0; text-align: center; }
 
-    .integration .section-h { margin: 0 auto 12px; text-align: center; max-width: 100%; }
-    .integration .section-sub { margin: 0 auto 44px; text-align: center; max-width: 560px; }
+    .integration .section-h { margin: 0 auto 12px; max-width: 100%; }
+    .integration .section-sub { margin: 0 auto 44px; }
 
-    .stack-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .stack-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--midgray);
+      margin-bottom: 14px;
+      margin-top: 24px;
+    }
+
+    .stack-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 
     .stack-chip {
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 20px;
-      font-size: 0.88rem;
+      border-radius: 7px;
+      padding: 9px 18px;
+      font-size: 0.84rem;
       font-weight: 600;
-      color: #2c3e50;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
+
+    .stack-chip:hover { border-color: #c4bbad; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 
     .stack-row.secondary .stack-chip {
       background: transparent;
-      border-color: #c8d6e5;
       color: var(--gray);
-      font-size: 0.82rem;
-      font-weight: 500;
+      font-weight: 400;
+      font-size: 0.8rem;
     }
 
-    .stack-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--midgray);
-      margin-bottom: 12px;
-      margin-top: 24px;
-    }
-
-    /* ── CTA ──────────────────────────────────────────────────── */
+    /* ── CTA ─────────────────────────────────────────────── */
     .cta-section {
-      background: linear-gradient(160deg, #0c1a2b 0%, #1a4f8a 100%);
-      color: var(--white);
-      padding: 96px 6%;
+      background: var(--midnight);
+      padding: 112px 5%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
-    .cta-inner { max-width: 680px; }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 70vh;
+      background: radial-gradient(ellipse at center, rgba(37,99,235,0.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
 
-    .cta-section .section-h { color: var(--white); max-width: 100%; font-size: clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom: 16px; }
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cta-section .section-tag { color: var(--amber-lt); }
+
+    .cta-h {
+      font-family: 'Fraunces', serif;
+      font-optical-sizing: auto;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .cta-h em { font-style: italic; color: var(--amber-lt); }
 
     .cta-sub {
-      font-size: 1.05rem;
-      color: rgba(255,255,255,0.68);
-      line-height: 1.7;
-      margin-bottom: 36px;
-      max-width: 560px;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+      margin-bottom: 40px;
+      font-weight: 300;
     }
 
-    .cta-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
 
-    .btn-white {
-      background: var(--white);
-      color: var(--navy);
-      padding: 13px 28px;
-      border-radius: 7px;
+    .btn-primary-lg {
+      font-family: 'Space Grotesk', sans-serif;
       font-size: 0.95rem;
       font-weight: 700;
-      text-decoration: none;
+      color: var(--white);
+      background: var(--blue);
+      border: none;
+      padding: 15px 32px;
+      border-radius: 8px;
+      cursor: pointer;
       transition: background 0.2s, transform 0.15s;
       display: inline-block;
-      cursor: pointer;
-      border: none;
+      text-decoration: none;
     }
 
-    .btn-white:hover { background: #e4eef9; transform: translateY(-1px); }
+    .btn-primary-lg:hover { background: var(--blue2); transform: translateY(-1px); }
 
-    .cta-fine { font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.6; }
+    .btn-outline-lg {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 14px 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      display: inline-block;
+      text-decoration: none;
+    }
 
-    .cta-fine strong { color: rgba(255,255,255,0.65); font-weight: 600; }
+    .btn-outline-lg:hover { border-color: rgba(255,255,255,0.5); color: var(--white); }
 
-    /* ── FOOTER ───────────────────────────────────────────────── */
-    footer { background: #080f18; color: rgba(255,255,255,0.35); text-align: center; padding: 28px 6%; font-size: 0.8rem; }
+    .cta-fine { font-size: 0.78rem; color: rgba(255,255,255,0.28); line-height: 1.6; }
+    .cta-fine strong { color: rgba(255,255,255,0.45); font-weight: 600; }
 
-    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
-    footer a:hover { color: rgba(255,255,255,0.75); }
+    /* ── FOOTER ───────────────────────────────────────────── */
+    footer {
+      background: #020609;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 28px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
-    /* ══════════════════════════════════════════════════════════
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+    }
+
+    .footer-logo em { font-style: normal; color: rgba(251,191,36,0.5); }
+
+    .footer-links { display: flex; gap: 20px; }
+
+    .footer-links a {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.25);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: rgba(255,255,255,0.6); }
+
+    /* ══════════════════════════════════════════════════════
        ROI CALCULATOR MODAL
-    ══════════════════════════════════════════════════════════ */
-
+    ══════════════════════════════════════════════════════ */
     .roi-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(8, 15, 24, 0.82);
-      backdrop-filter: blur(4px);
+      background: rgba(2,6,9,0.88);
+      backdrop-filter: blur(6px);
       z-index: 1000;
       display: flex;
       align-items: center;
@@ -482,10 +749,7 @@
       transition: opacity 0.25s;
     }
 
-    .roi-backdrop.open {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .roi-backdrop.open { opacity: 1; pointer-events: all; }
 
     .roi-modal {
       background: var(--white);
@@ -495,8 +759,8 @@
       max-height: 92vh;
       overflow-y: auto;
       position: relative;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
-      transform: translateY(12px);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+      transform: translateY(16px);
       transition: transform 0.25s;
     }
 
@@ -504,49 +768,41 @@
 
     .roi-modal-header {
       padding: 28px 36px 0;
+      background: var(--white);
       position: sticky;
       top: 0;
-      background: var(--white);
       z-index: 2;
       border-radius: 16px 16px 0 0;
     }
 
     .roi-close {
       position: absolute;
-      top: 20px;
-      right: 20px;
-      background: var(--light);
-      border: none;
-      width: 32px;
-      height: 32px;
+      top: 18px; right: 18px;
+      width: 32px; height: 32px;
       border-radius: 50%;
-      font-size: 1rem;
+      border: none;
+      background: var(--smoke);
       color: var(--gray);
+      font-size: 0.9rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.15s, color 0.15s;
+      transition: background 0.15s;
     }
 
-    .roi-close:hover { background: var(--border); color: var(--navy); }
+    .roi-close:hover { background: var(--border); }
 
-    /* Progress dots */
-    .roi-progress {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-bottom: 24px;
-    }
+    .roi-progress { display: flex; align-items: center; margin-bottom: 24px; }
 
     .roi-dot {
-      width: 28px;
-      height: 28px;
+      width: 26px; height: 26px;
       border-radius: 50%;
-      background: var(--light);
+      background: var(--smoke);
       border: 2px solid var(--border);
       color: var(--midgray);
-      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -555,75 +811,62 @@
       transition: all 0.2s;
     }
 
-    .roi-dot.active { background: var(--accent); border-color: var(--accent); color: var(--white); }
-    .roi-dot.done { background: var(--green); border-color: var(--green); color: var(--white); }
+    .roi-dot.active { background: var(--blue); border-color: var(--blue); color: var(--white); }
+    .roi-dot.done   { background: var(--green); border-color: var(--green); color: var(--white); }
 
-    .roi-line {
-      flex: 1;
-      height: 2px;
-      background: var(--border);
-      transition: background 0.2s;
-    }
-
+    .roi-line { flex: 1; height: 2px; background: var(--border); transition: background 0.2s; }
     .roi-line.done { background: var(--green); }
-
-    .roi-step-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--midgray);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
 
     .roi-modal-body { padding: 0 36px 36px; }
 
-    /* ── Step headings ── */
+    .roi-step-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--midgray);
+      margin-bottom: 8px;
+    }
+
     .roi-step-h {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--navy);
+      font-family: 'Fraunces', serif;
+      font-optical-sizing: auto;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
       letter-spacing: -0.02em;
       margin-bottom: 6px;
+      line-height: 1.2;
     }
 
-    .roi-step-sub {
-      font-size: 0.88rem;
-      color: var(--gray);
-      margin-bottom: 28px;
-      line-height: 1.6;
-    }
+    .roi-step-sub { font-size: 0.86rem; color: var(--gray); margin-bottom: 28px; line-height: 1.6; font-weight: 400; }
 
-    /* ── Sliders ── */
-    .slider-group { margin-bottom: 24px; }
+    /* Sliders */
+    .slider-group { margin-bottom: 22px; }
 
     .slider-label-row {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
     }
 
-    .slider-label {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--navy);
-    }
+    .slider-label { font-size: 0.84rem; font-weight: 600; color: var(--ink); }
 
     .slider-value {
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: var(--accent);
-      min-width: 80px;
-      text-align: right;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--blue);
     }
 
     input[type="range"].roi-slider {
       -webkit-appearance: none;
       appearance: none;
       width: 100%;
-      height: 5px;
-      border-radius: 3px;
+      height: 4px;
+      border-radius: 2px;
       background: var(--border);
       outline: none;
       cursor: pointer;
@@ -632,43 +875,35 @@
     input[type="range"].roi-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 20px;
-      height: 20px;
+      width: 18px; height: 18px;
       border-radius: 50%;
-      background: var(--accent);
+      background: var(--blue);
       cursor: pointer;
       border: 3px solid var(--white);
-      box-shadow: 0 1px 6px rgba(46,134,222,0.4);
+      box-shadow: 0 0 0 1px var(--blue);
       transition: box-shadow 0.15s;
     }
 
     input[type="range"].roi-slider::-webkit-slider-thumb:hover {
-      box-shadow: 0 1px 10px rgba(46,134,222,0.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,0.18);
     }
 
     input[type="range"].roi-slider::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
+      width: 18px; height: 18px;
       border-radius: 50%;
-      background: var(--accent);
+      background: var(--blue);
       cursor: pointer;
       border: 3px solid var(--white);
-      box-shadow: 0 1px 6px rgba(46,134,222,0.4);
+      box-shadow: 0 0 0 1px var(--blue);
     }
 
-    .slider-range-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      color: var(--midgray);
-      margin-top: 4px;
-    }
+    .slider-range-labels { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--midgray); margin-top: 5px; }
 
-    /* Live estimate bar */
+    /* Live estimate */
     .live-estimate {
-      background: linear-gradient(135deg, #0c1a2b, #173660);
+      background: var(--midnight);
       border-radius: 10px;
-      padding: 16px 20px;
+      padding: 18px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -676,107 +911,90 @@
       gap: 16px;
     }
 
-    .live-estimate-label {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.6);
-      font-weight: 500;
-    }
+    .live-estimate-label { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+    .live-estimate-note  { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: rgba(255,255,255,0.25); margin-top: 2px; }
 
     .live-estimate-value {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #6bbfff;
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--amber-lt);
       letter-spacing: -0.03em;
       white-space: nowrap;
     }
 
-    .live-estimate-note {
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.35);
-      margin-top: 2px;
-    }
-
-    /* ── Buttons ── */
+    /* Buttons in modal */
     .roi-btn {
-      display: inline-flex;
+      width: 100%;
+      display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      background: var(--accent);
-      color: var(--white);
-      border: none;
-      padding: 13px 28px;
-      border-radius: 7px;
-      font-size: 0.95rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
       font-weight: 700;
+      padding: 13px 24px;
+      border-radius: 8px;
+      border: none;
       cursor: pointer;
       transition: background 0.2s, transform 0.15s;
-      width: 100%;
-      justify-content: center;
-      margin-top: 24px;
+      margin-top: 20px;
+      text-decoration: none;
     }
 
-    .roi-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+    .roi-btn.primary { background: var(--blue); color: var(--white); }
+    .roi-btn.primary:hover { background: var(--blue2); transform: translateY(-1px); }
 
-    .roi-btn.secondary {
-      background: var(--light);
-      color: var(--navy);
-      border: 1px solid var(--border);
-    }
+    .roi-btn.dark { background: var(--midnight); color: var(--white); }
+    .roi-btn.dark:hover { background: var(--midnight2); }
 
+    .roi-btn.secondary { background: var(--smoke); color: var(--ink); border: 1px solid var(--border); }
     .roi-btn.secondary:hover { background: var(--border); transform: none; }
 
-    .roi-btn.dark {
-      background: var(--navy);
-    }
-
-    .roi-btn.dark:hover { background: var(--blue); }
-
-    /* ── Teaser results ── */
+    /* Teaser / result cards */
     .teaser-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 24px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
-    @media (max-width: 580px) { .teaser-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .teaser-grid { grid-template-columns: 1fr; } }
 
     .result-card {
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 20px 18px;
+      background: var(--paper);
       position: relative;
+      overflow: hidden;
     }
 
-    .result-card.locked { overflow: hidden; }
-
     .result-card-tag {
-      font-size: 0.68rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--blue);
       margin-bottom: 8px;
     }
 
     .result-card-value {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--navy);
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
       letter-spacing: -0.03em;
-      margin-bottom: 6px;
+      margin-bottom: 7px;
     }
 
-    .result-card-desc {
-      font-size: 0.78rem;
-      color: var(--gray);
-      line-height: 1.5;
-    }
+    .result-card-desc { font-size: 0.75rem; color: var(--gray); line-height: 1.5; }
 
     .result-lock {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(243,246,251,0.4) 0%, rgba(243,246,251,0.97) 55%);
+      background: linear-gradient(to bottom, rgba(249,248,245,0.3) 0%, rgba(249,248,245,0.96) 50%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -785,329 +1003,241 @@
       border-radius: 10px;
     }
 
-    .lock-icon { font-size: 1.1rem; margin-bottom: 4px; }
+    .lock-icon { font-size: 1rem; margin-bottom: 3px; }
+    .lock-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.07em; }
 
-    .lock-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--gray);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
-
-    .blurred-value {
-      filter: blur(6px);
-      user-select: none;
-    }
+    .blurred-value { filter: blur(6px); user-select: none; }
 
     /* Summary bar */
     .summary-bar {
-      background: var(--light);
+      background: var(--paper);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 20px 24px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    @media (max-width: 580px) { .summary-bar { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .summary-bar { grid-template-columns: 1fr 1fr; } }
 
-    .summary-stat-label { font-size: 0.72rem; color: var(--midgray); text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; margin-bottom: 4px; }
-
-    .summary-stat-value { font-size: 1.5rem; font-weight: 800; color: var(--navy); letter-spacing: -0.03em; }
-
+    .summary-stat-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--midgray); text-transform: uppercase; letter-spacing: 0.09em; font-weight: 700; margin-bottom: 5px; }
+    .summary-stat-value { font-family: 'Space Mono', monospace; font-size: 1.4rem; font-weight: 700; color: var(--ink); letter-spacing: -0.03em; }
     .summary-stat-value.green { color: var(--green); }
 
-    /* Assumptions toggle */
-    .assumptions-toggle {
-      font-size: 0.8rem;
-      color: var(--accent);
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 0;
-      text-align: left;
-      display: block;
-      margin: 16px 0 0;
-      font-weight: 500;
-    }
+    .assumptions-toggle { font-size: 0.78rem; color: var(--blue); background: none; border: none; cursor: pointer; padding: 0; display: block; margin-top: 14px; font-weight: 500; transition: color 0.15s; }
+    .assumptions-toggle:hover { color: var(--blue2); }
 
-    .assumptions-toggle:hover { text-decoration: underline; }
-
-    .assumptions-table {
-      display: none;
-      margin-top: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      font-size: 0.78rem;
-    }
-
+    .assumptions-table { display: none; margin-top: 12px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; font-size: 0.75rem; }
     .assumptions-table.visible { display: block; }
-
     .assumptions-table table { width: 100%; border-collapse: collapse; }
-
-    .assumptions-table th {
-      background: var(--light);
-      padding: 8px 12px;
-      text-align: left;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--midgray);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .assumptions-table td {
-      padding: 8px 12px;
-      border-bottom: 1px solid var(--border);
-      color: var(--gray);
-      vertical-align: top;
-    }
-
+    .assumptions-table th { background: var(--smoke); padding: 8px 12px; text-align: left; font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--midgray); border-bottom: 1px solid var(--border); }
+    .assumptions-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--gray); vertical-align: top; }
     .assumptions-table tr:last-child td { border-bottom: none; }
+    .assumptions-table td:first-child { font-weight: 600; color: var(--ink); }
 
-    .assumptions-table td:first-child { font-weight: 600; color: var(--navy); }
-
-    /* Email gate */
+    /* Gate form */
     .gate-form { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
-
-    .gate-form label {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--navy);
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .gate-form input {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 7px;
-      font-size: 0.92rem;
-      color: var(--navy);
-      outline: none;
-      transition: border-color 0.15s;
-      font-family: inherit;
-    }
-
-    .gate-form input:focus { border-color: var(--accent); }
-
-    .gate-form input.error { border-color: #c0392b; }
-
-    .gate-error {
-      font-size: 0.78rem;
-      color: #c0392b;
-      margin-top: 4px;
-      display: none;
-    }
-
+    .gate-form label { font-size: 0.8rem; font-weight: 600; color: var(--ink); display: block; margin-bottom: 5px; }
+    .gate-form input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 7px; font-size: 0.9rem; color: var(--ink); outline: none; transition: border-color 0.15s; font-family: 'Space Grotesk', sans-serif; background: var(--paper); }
+    .gate-form input:focus { border-color: var(--blue); background: var(--white); }
+    .gate-form input.error { border-color: #b91c1c; }
+    .gate-error { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #b91c1c; margin-top: 5px; display: none; }
     .gate-error.visible { display: block; }
+    .gate-fine { font-size: 0.74rem; color: var(--midgray); line-height: 1.55; margin-top: 10px; }
 
-    .gate-fine {
-      font-size: 0.76rem;
-      color: var(--midgray);
-      line-height: 1.5;
-      margin-top: 6px;
-    }
-
-    /* Result action row */
-    .result-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
+    .result-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
     @media (max-width: 480px) { .result-actions { grid-template-columns: 1fr; } }
 
-    /* ── PRINT STYLES ─────────────────────────────────────────── */
+    /* ── PRINT ────────────────────────────────────────────── */
     #print-receipt { display: none; }
 
     @media print {
       body > *:not(#print-receipt) { display: none !important; }
-      #print-receipt { display: block !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #1c2b3a; max-width: 680px; margin: 0 auto; padding: 40px; }
-      .pr-logo { font-size: 1.2rem; font-weight: 800; color: #0c1a2b; margin-bottom: 4px; }
-      .pr-logo span { color: #2e86de; }
-      .pr-date { font-size: 0.78rem; color: #8fa0b2; margin-bottom: 32px; }
-      .pr-title { font-size: 1.5rem; font-weight: 800; color: #0c1a2b; margin-bottom: 4px; }
-      .pr-sub { font-size: 0.85rem; color: #5f7080; margin-bottom: 28px; }
-      .pr-section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #8fa0b2; margin-bottom: 10px; border-bottom: 1px solid #d4dde9; padding-bottom: 6px; }
+      #print-receipt {
+        display: block !important;
+        font-family: 'Space Grotesk', sans-serif;
+        color: #0b0e13;
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 40px;
+      }
+      .pr-logo { font-family: Georgia, serif; font-style: italic; font-size: 1.2rem; font-weight: 700; color: #0b0e13; margin-bottom: 4px; }
+      .pr-date { font-family: monospace; font-size: 0.75rem; color: #94a3b8; margin-bottom: 32px; }
+      .pr-title { font-family: Georgia, serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+      .pr-sub { font-size: 0.84rem; color: #64748b; margin-bottom: 28px; }
+      .pr-section-label { font-family: monospace; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; margin-bottom: 10px; border-bottom: 1px solid #e2dcd2; padding-bottom: 6px; }
       .pr-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
-      .pr-table td { padding: 7px 0; font-size: 0.88rem; border-bottom: 1px solid #f3f6fb; }
-      .pr-table td:first-child { color: #5f7080; }
+      .pr-table td { padding: 7px 0; font-size: 0.86rem; border-bottom: 1px solid #f0ede7; }
+      .pr-table td:first-child { color: #64748b; }
       .pr-table td:last-child { font-weight: 700; text-align: right; }
-      .pr-results { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 28px; }
-      .pr-bucket { border: 1px solid #d4dde9; border-radius: 8px; padding: 14px; }
-      .pr-bucket-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #2e86de; margin-bottom: 6px; }
-      .pr-bucket-value { font-size: 1.2rem; font-weight: 800; color: #0c1a2b; }
-      .pr-total-bar { background: #f3f6fb; border-radius: 8px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-      .pr-total-label { font-size: 0.82rem; color: #5f7080; }
-      .pr-total-value { font-size: 1.6rem; font-weight: 800; color: #0c1a2b; }
-      .pr-stats { display: flex; gap: 32px; margin-bottom: 28px; }
-      .pr-stat-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: #8fa0b2; margin-bottom: 3px; }
-      .pr-stat-value { font-size: 1.1rem; font-weight: 800; color: #0d9f6e; }
-      .pr-note { font-size: 0.75rem; color: #8fa0b2; line-height: 1.6; border-top: 1px solid #d4dde9; padding-top: 16px; margin-top: 8px; }
-      .pr-footer { font-size: 0.75rem; color: #8fa0b2; margin-top: 20px; }
+      .pr-results { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+      .pr-bucket { border: 1px solid #e2dcd2; border-radius: 8px; padding: 14px; }
+      .pr-bucket-label { font-family: monospace; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #2563eb; margin-bottom: 6px; }
+      .pr-bucket-value { font-family: monospace; font-size: 1.1rem; font-weight: 700; color: #0b0e13; }
+      .pr-total-bar { background: #f9f8f5; border-radius: 8px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+      .pr-total-label { font-family: monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 4px; }
+      .pr-total-value { font-family: monospace; font-size: 1.5rem; font-weight: 700; color: #0b0e13; }
+      .pr-stat-label { font-family: monospace; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 3px; }
+      .pr-stat-value { font-family: monospace; font-size: 1rem; font-weight: 700; color: #059669; }
+      .pr-note { font-size: 0.72rem; color: #94a3b8; line-height: 1.6; border-top: 1px solid #e2dcd2; padding-top: 16px; margin-top: 16px; }
+      .pr-footer { font-family: monospace; font-size: 0.7rem; color: #94a3b8; margin-top: 16px; }
     }
   </style>
 </head>
 <body>
 
   <!-- NAV -->
-  <nav>
-    <a href="#" class="logo">Procurable<span>.ai</span></a>
-    <div class="nav-right">
+  <nav id="main-nav">
+    <a href="#" class="logo">Procurable<em>.ai</em></a>
+    <div class="nav-links">
       <a href="#usecases" class="nav-link">Use Cases</a>
       <a href="#integration" class="nav-link">Integrations</a>
-      <button class="btn-nav" onclick="openModal()">Run a Pilot</button>
+      <button class="nav-cta" onclick="openModal()">Run a Pilot</button>
     </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-inner">
-      <div class="eyebrow">
-        <span class="eyebrow-dot"></span>
-        Should-Cost Intelligence for Aerospace &amp; Manufacturing
-      </div>
-      <h1>Walk into every negotiation knowing more than <em>your supplier does.</em></h1>
+      <div class="hero-eyebrow">Should-Cost Intelligence · Aerospace & Manufacturing</div>
+      <h1>Walk into every<br>negotiation knowing more<br>than <em>your supplier does.</em></h1>
       <p class="hero-sub">
         Procurable.ai gives procurement teams audit-ready should-cost models, live commodity intelligence,
         and negotiation benchmarks — built from your actual data, not a consultant's template.
-        Your CFO will trust the numbers. Your suppliers won't see you coming.
       </p>
       <div class="hero-actions">
         <button class="btn-primary" onclick="openModal()">Calculate Your ROI</button>
-        <a href="#usecases" class="btn-ghost">See Use Cases</a>
+        <a href="#usecases" class="btn-outline">See Use Cases</a>
       </div>
-      <div class="hero-metrics">
-        <div class="metric">
-          <span class="metric-number">80<span>%</span></span>
-          <span class="metric-label">Reduction in should-cost modeling time</span>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num" data-count="80" data-suffix="%">80%</span>
+          <span class="hero-stat-label">Reduction in should-cost<br>modeling time</span>
         </div>
-        <div class="metric">
-          <span class="metric-number">$2.3<span>M</span></span>
-          <span class="metric-label">Average hard savings in year one</span>
+        <div class="hero-stat">
+          <span class="hero-stat-num" data-prefix="$" data-count="2.3" data-suffix="M">$2.3M</span>
+          <span class="hero-stat-label">Average hard savings<br>in year one</span>
         </div>
-        <div class="metric">
-          <span class="metric-number">30</span>
-          <span class="metric-label">Days from kickoff to first insight</span>
+        <div class="hero-stat">
+          <span class="hero-stat-num" data-count="30">30</span>
+          <span class="hero-stat-label">Days from kickoff<br>to first insight</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PAIN -->
-  <section class="pain">
-    <div class="pain-inner">
-      <div class="section-tag">The Problem</div>
-      <h2 class="section-h">If any of these sound familiar, you're in the right place.</h2>
-      <p class="section-sub">
-        We built Procurable.ai by talking to procurement leaders at aerospace and manufacturing companies.
-        These are the lines that came up on every call.
-      </p>
+  <!-- PULL QUOTE STRIP -->
+  <div class="pull-quote-strip">
+    <blockquote>"My team spends more time building models than using them. By the time we have a number, the quote window has closed."</blockquote>
+    <cite>Director of Strategic Sourcing · Defense Manufacturer</cite>
+  </div>
 
-      <div class="quotes-grid">
+  <!-- PAIN -->
+  <section class="pain" id="pain">
+    <div class="container">
+      <div class="fade-up">
+        <div class="section-tag">The Problem</div>
+        <h2 class="section-h">If any of these sound familiar, you're in the right place.</h2>
+        <p class="section-sub">We built Procurable.ai by talking to procurement leaders at aerospace and manufacturing companies. These lines came up on every call.</p>
+      </div>
+
+      <div class="quotes-grid fade-up">
         <div class="quote-card">
           <p>"I need to know if we're leaving money on the table — but my team can't produce a should-cost model fast enough to matter."</p>
-          <div class="quote-attr">VP of Procurement, Tier-1 Aerospace Supplier</div>
+          <div class="quote-attr">VP of Procurement · Tier-1 Aerospace Supplier</div>
         </div>
         <div class="quote-card">
-          <p>"My team spends more time building models than using them. We pull from SAP, then Coupa, then three different spreadsheets. By the time we have a number, the quote window has closed."</p>
-          <div class="quote-attr">Director of Strategic Sourcing, Defense Manufacturer</div>
+          <p>"We pull from SAP, then Coupa, then three different spreadsheets. By the time we have a number, the quote window has closed."</p>
+          <div class="quote-attr">Director of Strategic Sourcing · Defense Manufacturer</div>
         </div>
         <div class="quote-card">
           <p>"I can't go to the CFO with a number I can't defend. If I can't show the cost breakdown, it's just my opinion versus the supplier's invoice."</p>
-          <div class="quote-attr">CPO, Advanced Manufacturing OEM</div>
+          <div class="quote-attr">CPO · Advanced Manufacturing OEM</div>
         </div>
         <div class="quote-card">
           <p>"We need should-cost capability that doesn't require a consultant every time. I'm not paying $300/hour for analysis my team should be able to run themselves."</p>
-          <div class="quote-attr">VP of Global Sourcing, Industrial Equipment</div>
+          <div class="quote-attr">VP of Global Sourcing · Industrial Equipment</div>
         </div>
       </div>
 
-      <div class="pain-bridge">
-        <div>
-          <h3 class="red">What's slowing your team down today</h3>
-          <ul class="pain-list">
-            <li><span class="icon">⬜</span> Should-cost models assembled by hand in Excel, using stale commodity data</li>
-            <li><span class="icon">⬜</span> Spend data fragmented across SAP, Oracle, Coupa, and too many spreadsheets to count</li>
-            <li><span class="icon">⬜</span> No real-time commodity price feeds — steel, aluminum, and rare earths move daily</li>
-            <li><span class="icon">⬜</span> Savings documented in ways finance doesn't trust or can't audit</li>
+      <div class="before-after fade-up">
+        <div class="ba-col">
+          <div class="ba-label before">Today</div>
+          <ul class="ba-list">
+            <li><span class="icon">⬜</span> Should-cost models assembled in Excel using stale commodity data</li>
+            <li><span class="icon">⬜</span> Spend data fragmented across SAP, Oracle, Coupa, and spreadsheets</li>
+            <li><span class="icon">⬜</span> No real-time commodity feeds — steel, aluminum, rare earths move daily</li>
+            <li><span class="icon">⬜</span> Savings documented in ways finance can't audit</li>
             <li><span class="icon">⬜</span> Senior buyers doing data work, not negotiation strategy</li>
             <li><span class="icon">⬜</span> NPI cost targets set without real supplier market data</li>
           </ul>
         </div>
-        <div>
-          <h3 class="green">What Procurable.ai makes possible</h3>
-          <ul class="pain-list">
-            <li><span class="icon">✅</span> Should-cost models generated in hours, not days — backed by live market data</li>
-            <li><span class="icon">✅</span> Single source of truth that pulls from your existing ERP, sourcing, and commodity feeds</li>
-            <li><span class="icon">✅</span> Commodity index tracking built into every model — automatically updated</li>
+        <div class="ba-col dark">
+          <div class="ba-label after">With Procurable.ai</div>
+          <ul class="ba-list">
+            <li><span class="icon">✅</span> Should-cost models in hours, not days — backed by live market data</li>
+            <li><span class="icon">✅</span> Single source of truth pulling from your existing ERP and sourcing stack</li>
+            <li><span class="icon">✅</span> Commodity indexes built into every model, automatically updated</li>
             <li><span class="icon">✅</span> Audit-ready savings documentation your CFO can put in a board deck</li>
-            <li><span class="icon">✅</span> Buyers spending their time on strategy and negotiation, not data wrangling</li>
+            <li><span class="icon">✅</span> Buyers focused on strategy and negotiation, not data wrangling</li>
             <li><span class="icon">✅</span> Early cost visibility for NPI from day one of the sourcing cycle</li>
           </ul>
         </div>
       </div>
 
-      <div class="roi-nudge">
-        <div class="roi-nudge-text">
+      <div class="roi-banner fade-up">
+        <div class="roi-banner-text">
           <h4>Wondering what this is worth to your team specifically?</h4>
           <p>Plug in your numbers. See a breakdown across three value buckets in under two minutes.</p>
         </div>
-        <button class="btn-primary" onclick="openModal()" style="white-space:nowrap;flex-shrink:0;">Calculate Your ROI →</button>
+        <button class="btn-primary" onclick="openModal()" style="flex-shrink:0;white-space:nowrap;">Calculate Your ROI →</button>
       </div>
     </div>
   </section>
 
   <!-- USE CASES -->
   <section class="usecases" id="usecases">
-    <div class="usecases-inner">
-      <div class="section-tag">Use Cases</div>
-      <h2 class="section-h">Built for how procurement actually works</h2>
-      <p class="section-sub">
-        Not a generic spend analytics dashboard. Procurable.ai is designed around
-        the specific workflows your team runs every quarter.
-      </p>
-      <div class="use-grid">
+    <div class="container">
+      <div class="fade-up">
+        <div class="section-tag">Use Cases</div>
+        <h2 class="section-h">Built for how procurement actually works</h2>
+        <p class="section-sub">Not a generic spend analytics dashboard. Designed around the specific workflows your team runs every quarter.</p>
+      </div>
+      <div class="use-grid fade-up">
         <div class="use-card">
-          <span class="use-tag">Should-Cost Modeling</span>
+          <div class="use-num">01 — Should-Cost Modeling</div>
           <h3>Build defensible cost models in hours, not weeks</h3>
-          <p>Select a commodity category, upload your BOM or part specs, and Procurable.ai constructs a fully itemized cost breakdown — material, labor, overhead, margin — grounded in real market data. Every assumption is visible and auditable.</p>
+          <p>Select a commodity category, upload your BOM or part specs, and Procurable.ai constructs a fully itemized cost breakdown — material, labor, overhead, margin — grounded in real market data. Every assumption visible and auditable.</p>
           <div class="use-outcome">↑ 80% faster modeling · Audit-ready output</div>
         </div>
         <div class="use-card">
-          <span class="use-tag">Negotiation Intelligence</span>
+          <div class="use-num">02 — Negotiation Intelligence</div>
           <h3>Know what a part should cost before your supplier quotes it</h3>
           <p>Procurable.ai benchmarks supplier quotes against should-cost targets and market comparables, so you walk into every negotiation with a position you can justify — not a number you're guessing at.</p>
           <div class="use-outcome">↑ Stronger negotiation leverage · Data-backed positions</div>
         </div>
         <div class="use-card">
-          <span class="use-tag">Commodity Volatility</span>
+          <div class="use-num">03 — Commodity Volatility</div>
           <h3>Stop getting surprised by material cost swings</h3>
           <p>Live commodity indexes for steel, aluminum, rare earths, semiconductors, and energy are embedded directly into your cost models. When markets move, your models update — and your team gets an alert before it hits your P&amp;L.</p>
           <div class="use-outcome">↑ Proactive cost exposure alerts · No stale data</div>
         </div>
         <div class="use-card">
-          <span class="use-tag">NPI Cost Visibility</span>
+          <div class="use-num">04 — NPI Cost Visibility</div>
           <h3>Give engineering real cost targets before tooling is cut</h3>
           <p>Integrate Procurable.ai into your NPI process to generate should-cost estimates at the design stage — before suppliers quote and before commitments are locked. Engineering and procurement aligned from day one.</p>
           <div class="use-outcome">↑ Earlier cost targets · Fewer re-sourcing cycles</div>
         </div>
         <div class="use-card">
-          <span class="use-tag">Savings Documentation</span>
+          <div class="use-num">05 — Savings Documentation</div>
           <h3>Savings your CFO will actually believe</h3>
           <p>Procurable.ai automatically documents hard savings and cost avoidance with a methodology finance can audit — pre-negotiation baseline, post-award actuals, market benchmark, and variance explanation. All in one export.</p>
           <div class="use-outcome">↑ Board-ready savings reports · Finance sign-off</div>
         </div>
         <div class="use-card">
-          <span class="use-tag">TCO Analysis</span>
+          <div class="use-num">06 — TCO Analysis</div>
           <h3>Total cost of ownership across your commodity portfolio</h3>
           <p>Move beyond unit price. Procurable.ai models total cost of ownership across your supplier base — factoring in quality escapes, logistics, lead time risk, and switching costs — so you're optimizing the right number.</p>
           <div class="use-outcome">↑ Full TCO visibility · Smarter supplier trade-offs</div>
@@ -1118,14 +1248,16 @@
 
   <!-- OBJECTIONS -->
   <section class="objections">
-    <div class="objections-inner">
-      <div class="section-tag" style="color:#6bbfff;">Straight Answers</div>
-      <h2 class="section-h">You've been burned by "AI-powered" promises before. Fair.</h2>
-      <p class="section-sub">Here's what's different — and what you should ask any vendor in this space, including us.</p>
-      <div class="obj-grid">
+    <div class="container">
+      <div class="fade-up">
+        <div class="section-tag" style="color:var(--amber-lt);">Straight Answers</div>
+        <h2 class="section-h">You've been burned by "AI-powered" promises before. Fair.</h2>
+        <p class="section-sub">Here's what's different — and what you should ask any vendor in this space, including us.</p>
+      </div>
+      <div class="obj-grid fade-up">
         <div class="obj-card">
           <div class="obj-q">"How does this integrate with SAP?"</div>
-          <div class="obj-a"><strong>Native connectors for SAP, Oracle, and Infor.</strong> We pull your spend data, PO history, and supplier master directly — no manual exports, no shadow IT. Most customers are live in under 30 days.</div>
+          <div class="obj-a"><strong>Native connectors for SAP, Oracle, and Infor.</strong> We pull your spend data, PO history, and supplier master directly — no manual exports, no shadow IT. Most customers live in under 30 days.</div>
         </div>
         <div class="obj-card">
           <div class="obj-q">"What's the implementation lift?"</div>
@@ -1141,7 +1273,7 @@
         </div>
         <div class="obj-card">
           <div class="obj-q">"We already have Coupa / Jaggaer / Ariba."</div>
-          <div class="obj-a"><strong>We augment your sourcing platform, not replace it.</strong> Procurable.ai adds should-cost intelligence and commodity data that your sourcing suite doesn't provide. Think of it as the cost brain behind your existing workflow.</div>
+          <div class="obj-a"><strong>We augment your sourcing platform, not replace it.</strong> Procurable.ai adds should-cost intelligence and commodity data your sourcing suite doesn't provide. Think of it as the cost brain behind your existing workflow.</div>
         </div>
         <div class="obj-card">
           <div class="obj-q">"What if the pilot doesn't prove value?"</div>
@@ -1153,49 +1285,52 @@
 
   <!-- INTEGRATION -->
   <section class="integration" id="integration">
-    <div class="integration-inner">
-      <div class="section-tag">Integrations</div>
-      <h2 class="section-h">Connects to the stack you already run</h2>
-      <p class="section-sub">No rip-and-replace. Procurable.ai layers onto your existing ERP, sourcing platform, and commodity data feeds — typically live in under 30 days.</p>
-      <div class="stack-label">ERP</div>
-      <div class="stack-row">
-        <div class="stack-chip">SAP S/4HANA</div>
-        <div class="stack-chip">Oracle Fusion</div>
-        <div class="stack-chip">Infor CloudSuite</div>
-        <div class="stack-chip">Microsoft Dynamics</div>
+    <div class="container">
+      <div class="fade-up">
+        <div class="section-tag">Integrations</div>
+        <h2 class="section-h">Connects to the stack you already run</h2>
+        <p class="section-sub">No rip-and-replace. Procurable.ai layers onto your existing ERP, sourcing platform, and commodity data feeds — typically live in under 30 days.</p>
       </div>
-      <div class="stack-label">Sourcing & Procurement</div>
-      <div class="stack-row">
-        <div class="stack-chip">Coupa</div>
-        <div class="stack-chip">Jaggaer</div>
-        <div class="stack-chip">SAP Ariba</div>
-        <div class="stack-chip">Ivalua</div>
-      </div>
-      <div class="stack-label">Commodity & Market Data</div>
-      <div class="stack-row secondary">
-        <div class="stack-chip">LME Metals</div>
-        <div class="stack-chip">S&P Global Commodity Insights</div>
-        <div class="stack-chip">IHS Markit</div>
-        <div class="stack-chip">Bureau of Labor Statistics PPI</div>
-        <div class="stack-chip">Custom Feeds</div>
+      <div class="fade-up">
+        <div class="stack-label">ERP</div>
+        <div class="stack-row">
+          <div class="stack-chip">SAP S/4HANA</div>
+          <div class="stack-chip">Oracle Fusion</div>
+          <div class="stack-chip">Infor CloudSuite</div>
+          <div class="stack-chip">Microsoft Dynamics</div>
+        </div>
+        <div class="stack-label">Sourcing & Procurement</div>
+        <div class="stack-row">
+          <div class="stack-chip">Coupa</div>
+          <div class="stack-chip">Jaggaer</div>
+          <div class="stack-chip">SAP Ariba</div>
+          <div class="stack-chip">Ivalua</div>
+        </div>
+        <div class="stack-label">Commodity & Market Data</div>
+        <div class="stack-row secondary">
+          <div class="stack-chip">LME Metals</div>
+          <div class="stack-chip">S&P Global Commodity Insights</div>
+          <div class="stack-chip">IHS Markit</div>
+          <div class="stack-chip">Bureau of Labor Statistics PPI</div>
+          <div class="stack-chip">Custom Feeds</div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- CTA -->
   <section class="cta-section" id="cta">
-    <div class="cta-inner">
-      <div class="section-tag" style="color:#6bbfff;">Get Started</div>
-      <h2 class="section-h">Start with one commodity category. See results in 30 days.</h2>
+    <div class="cta-inner fade-up">
+      <div class="section-tag">Get Started</div>
+      <h2 class="cta-h">Start with one commodity<br>category. See results in <em>30 days.</em></h2>
       <p class="cta-sub">
-        We don't do generic demos. Bring us a real category — machined aluminum,
-        PCBs, rare earth components, whatever's under the most cost pressure right now —
-        and we'll run a structured pilot using your data, your suppliers, and your cost targets.
-        You'll leave with a should-cost model you can actually use.
+        We don't do generic demos. Bring us a real category — machined aluminum, PCBs, rare earth components,
+        whatever's under the most cost pressure right now — and we'll run a structured pilot using your data,
+        your suppliers, and your cost targets.
       </p>
       <div class="cta-actions">
-        <button class="btn-white" onclick="openModal()">Calculate Your ROI First</button>
-        <a href="mailto:hello@procurable.ai" class="btn-ghost">Talk to a Procurement Expert</a>
+        <button class="btn-primary-lg" onclick="openModal()">Calculate Your ROI First</button>
+        <a href="mailto:hello@procurable.ai" class="btn-outline-lg">Talk to a Procurement Expert</a>
       </div>
       <p class="cta-fine">
         <strong>The pilot is scoped to your commodity categories, your ERP, and your savings targets.</strong>
@@ -1206,22 +1341,23 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>
-      &copy; 2026 Procurable.ai &nbsp;·&nbsp;
-      <a href="#">Privacy Policy</a> &nbsp;·&nbsp;
-      <a href="#">Terms of Service</a> &nbsp;·&nbsp;
+    <a href="#" class="footer-logo">Procurable<em>.ai</em></a>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
       <a href="mailto:hello@procurable.ai">hello@procurable.ai</a>
-    </p>
+      <span style="color:rgba(255,255,255,0.15);font-size:0.75rem;">&copy; 2026</span>
+    </div>
   </footer>
 
-  <!-- ══════════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════
        ROI CALCULATOR MODAL
-  ══════════════════════════════════════════════════════════ -->
-  <div id="roi-backdrop" class="roi-backdrop" role="dialog" aria-modal="true" aria-label="ROI Calculator">
+  ══════════════════════════════════════════════════════ -->
+  <div id="roi-backdrop" class="roi-backdrop" role="dialog" aria-modal="true">
     <div class="roi-modal" id="roi-modal">
 
       <div class="roi-modal-header">
-        <button class="roi-close" onclick="closeModal()" aria-label="Close">✕</button>
+        <button class="roi-close" onclick="closeModal()">✕</button>
         <div class="roi-progress">
           <div class="roi-dot active" id="dot-1">1</div>
           <div class="roi-line" id="line-1"></div>
@@ -1235,11 +1371,11 @@
 
       <div class="roi-modal-body">
 
-        <!-- ── STEP 1: INPUTS ── -->
+        <!-- STEP 1: INPUTS -->
         <div id="step-1">
           <div class="roi-step-label">Step 1 of 4 — Your Team</div>
           <h2 class="roi-step-h">Tell us about your procurement function</h2>
-          <p class="roi-step-sub">Adjust to match your operation. We'll show you estimated annual value across three categories — time recovered, negotiation uplift, and consulting displaced.</p>
+          <p class="roi-step-sub">Adjust the inputs to match your operation. We'll estimate annual value across three categories: time recovered, negotiation uplift, and consulting displaced.</p>
 
           <div class="slider-group">
             <div class="slider-label-row">
@@ -1294,14 +1430,14 @@
             <div class="live-estimate-value" id="live-total">$3.3M</div>
           </div>
 
-          <button class="roi-btn" onclick="goToTeaser()">Calculate My ROI →</button>
+          <button class="roi-btn primary" onclick="goToTeaser()">Calculate My ROI →</button>
         </div>
 
-        <!-- ── STEP 2: TEASER ── -->
+        <!-- STEP 2: TEASER -->
         <div id="step-2" style="display:none">
           <div class="roi-step-label">Step 2 of 4 — Preview</div>
           <h2 class="roi-step-h">Here's a preview of your results</h2>
-          <p class="roi-step-sub">Based on your inputs, we've estimated value across three categories. Unlock the full breakdown to see all three.</p>
+          <p class="roi-step-sub">We've estimated value across three categories. Unlock the full breakdown to see all three.</p>
 
           <div class="teaser-grid">
             <div class="result-card">
@@ -1309,23 +1445,17 @@
               <div class="result-card-value" id="teaser-time">—</div>
               <div class="result-card-desc">Annual value of buyer hours freed from manual should-cost modeling</div>
             </div>
-            <div class="result-card locked">
+            <div class="result-card" style="position:relative;overflow:hidden;">
               <div class="result-card-tag">Negotiation Uplift</div>
               <div class="result-card-value blurred-value">$2,800,000</div>
-              <div class="result-card-desc blurred-value">Additional hard savings from data-backed negotiation positions</div>
-              <div class="result-lock">
-                <div class="lock-icon">🔒</div>
-                <div class="lock-label">Unlock below</div>
-              </div>
+              <div class="result-card-desc blurred-value">Additional hard savings from data-backed positions</div>
+              <div class="result-lock"><div class="lock-icon">🔒</div><div class="lock-label">Unlock below</div></div>
             </div>
-            <div class="result-card locked">
+            <div class="result-card" style="position:relative;overflow:hidden;">
               <div class="result-card-tag">Consulting Avoided</div>
               <div class="result-card-value blurred-value">$126,000</div>
-              <div class="result-card-desc blurred-value">External cost benchmarking spend displaced by in-house capability</div>
-              <div class="result-lock">
-                <div class="lock-icon">🔒</div>
-                <div class="lock-label">Unlock below</div>
-              </div>
+              <div class="result-card-desc blurred-value">External benchmarking spend displaced in-house</div>
+              <div class="result-lock"><div class="lock-icon">🔒</div><div class="lock-label">Unlock below</div></div>
             </div>
           </div>
 
@@ -1333,7 +1463,7 @@
           <button class="roi-btn secondary" onclick="goToStep(1)" style="margin-top:10px;">← Adjust My Inputs</button>
         </div>
 
-        <!-- ── STEP 3: EMAIL GATE ── -->
+        <!-- STEP 3: GATE -->
         <div id="step-3" style="display:none">
           <div class="roi-step-label">Step 3 of 4 — Your Results</div>
           <h2 class="roi-step-h">Your full breakdown is ready</h2>
@@ -1351,13 +1481,13 @@
             </div>
           </div>
 
-          <p class="gate-fine" style="margin-top:14px;">We don't share your data. No spam. One follow-up from our team if the numbers make sense for a pilot conversation.</p>
+          <p class="gate-fine">We don't share your data. No spam. One follow-up from our team if the numbers make sense for a pilot conversation.</p>
 
-          <button class="roi-btn" onclick="goToResults()" style="margin-top:20px;">Show My ROI →</button>
+          <button class="roi-btn primary" onclick="goToResults()" style="margin-top:20px;">Show My ROI →</button>
           <button class="roi-btn secondary" onclick="goToStep(2)" style="margin-top:10px;">← Back</button>
         </div>
 
-        <!-- ── STEP 4: FULL RESULTS ── -->
+        <!-- STEP 4: RESULTS -->
         <div id="step-4" style="display:none">
           <div class="roi-step-label">Step 4 of 4 — Your ROI</div>
           <h2 class="roi-step-h" id="results-headline">Your estimated annual value</h2>
@@ -1367,7 +1497,7 @@
             <div class="result-card">
               <div class="result-card-tag">Time Recovered</div>
               <div class="result-card-value" id="res-time">—</div>
-              <div class="result-card-desc">Buyer hours freed from manual modeling (80% reduction × <span id="res-hrs"></span> hrs/model × <span id="res-mods"></span> models/mo)</div>
+              <div class="result-card-desc">Buyer hours freed from manual modeling (80% reduction × <span id="res-hrs"></span> hrs/model × <span id="res-mods"></span>/mo)</div>
             </div>
             <div class="result-card">
               <div class="result-card-tag">Negotiation Uplift</div>
@@ -1399,27 +1529,21 @@
           <button class="assumptions-toggle" onclick="toggleAssumptions()">▶ View calculation methodology &amp; assumptions</button>
           <div class="assumptions-table" id="assumptions-table">
             <table>
-              <thead>
-                <tr>
-                  <th>Assumption</th>
-                  <th>Value</th>
-                  <th>Rationale</th>
-                </tr>
-              </thead>
+              <thead><tr><th>Assumption</th><th>Value</th><th>Rationale</th></tr></thead>
               <tbody>
                 <tr><td>Modeling time reduction</td><td>80%</td><td>Consistent with observed customer outcomes</td></tr>
                 <tr><td>Fully-loaded buyer cost</td><td>$145K/yr</td><td>BLS + industry benchmarks, senior buyer in A&amp;D/Manufacturing</td></tr>
                 <tr><td>Working hours per year</td><td>2,080</td><td>Standard full-time equivalent</td></tr>
                 <tr><td>Incremental negotiation uplift</td><td>1.5% of spend</td><td>Conservative end of observed 1–3% range from data-backed sourcing</td></tr>
                 <tr><td>Consulting displacement rate</td><td>70%</td><td>Excludes strategic SRM, M&amp;A diligence; should-cost work only</td></tr>
-                <tr><td>Procurable.ai annual cost</td><td>Contact us</td><td>Priced per program scope — request a scoped quote alongside your pilot</td></tr>
+                <tr><td>Procurable.ai annual cost</td><td>Contact us</td><td>Priced per program scope — request a quote alongside your pilot</td></tr>
               </tbody>
             </table>
           </div>
 
           <div class="result-actions">
-            <button class="roi-btn dark" onclick="downloadPDF()">Download PDF Summary</button>
-            <a href="mailto:hello@procurable.ai" class="roi-btn" style="text-decoration:none;margin-top:0;">Run a Pilot with Your Data →</a>
+            <button class="roi-btn dark" onclick="downloadPDF()" style="margin-top:0;">Download PDF Summary</button>
+            <a href="mailto:hello@procurable.ai" class="roi-btn primary" style="margin-top:0;text-decoration:none;">Run a Pilot →</a>
           </div>
           <button class="roi-btn secondary" onclick="goToStep(1)" style="margin-top:10px;">← Adjust Inputs</button>
         </div>
@@ -1428,96 +1552,71 @@
     </div>
   </div>
 
-  <!-- PRINT RECEIPT (hidden, shown only on print) -->
+  <!-- PRINT RECEIPT -->
   <div id="print-receipt">
-    <div class="pr-logo">Procurable<span>.ai</span></div>
+    <div class="pr-logo">Procurable.ai</div>
     <div class="pr-date" id="pr-date"></div>
     <div class="pr-title">ROI Summary</div>
     <div class="pr-sub" id="pr-sub">Procurement ROI Estimate</div>
-
     <div class="pr-section-label" style="margin-top:24px;">Your Inputs</div>
     <table class="pr-table" id="pr-inputs-table"></table>
-
     <div class="pr-section-label">Estimated Annual Value</div>
     <div class="pr-results" id="pr-buckets"></div>
-
     <div class="pr-total-bar">
       <div>
-        <div class="pr-stat-label">Total Annual Value</div>
+        <div class="pr-total-label">Total Annual Value</div>
         <div class="pr-total-value" id="pr-total"></div>
       </div>
       <div style="display:flex;gap:32px;">
-        <div>
-          <div class="pr-stat-label">Estimated ROI</div>
-          <div class="pr-stat-value" id="pr-roi"></div>
-        </div>
-        <div>
-          <div class="pr-stat-label">Payback Period</div>
-          <div class="pr-stat-value" id="pr-payback"></div>
-        </div>
+        <div><div class="pr-stat-label">Estimated ROI</div><div class="pr-stat-value" id="pr-roi"></div></div>
+        <div><div class="pr-stat-label">Payback Period</div><div class="pr-stat-value" id="pr-payback"></div></div>
       </div>
     </div>
-
-    <div class="pr-note">All figures are estimates based on conservative industry benchmarks. Modeling time reduction (80%) and negotiation uplift (1.5% of actively sourced spend) are based on observed outcomes. Full methodology available on request. Procurable.ai pricing is scoped per engagement — contact us for a quote aligned to your pilot scope.</div>
-    <div class="pr-footer">Procurable.ai &nbsp;·&nbsp; hello@procurable.ai &nbsp;·&nbsp; procurable.ai</div>
+    <div class="pr-note">All figures are estimates based on conservative industry benchmarks. Modeling time reduction (80%) and negotiation uplift (1.5%) are based on observed outcomes. Full methodology available on request. Procurable.ai pricing is scoped per engagement.</div>
+    <div class="pr-footer">Procurable.ai · hello@procurable.ai · procurable.ai</div>
   </div>
 
   <script>
-    // ── Constants ───────────────────────────────────────────
-    const HOURLY_RATE   = 145000 / 2080;   // $69.71
+    // ── Constants ──────────────────────────────────────────
+    const HOURLY_RATE    = 145000 / 2080;
     const TIME_REDUCTION = 0.80;
-    const NEG_UPLIFT    = 0.015;
-    const CONSULT_DISP  = 0.70;
-    // Placeholder — update with real ARR before go-live
-    const PROCURABLE_COST = 240000;
+    const NEG_UPLIFT     = 0.015;
+    const CONSULT_DISP   = 0.70;
+    const PROCURABLE_COST = 240000; // placeholder — update before go-live
 
     const personalDomains = ['gmail.com','yahoo.com','hotmail.com','outlook.com',
-      'aol.com','icloud.com','me.com','live.com','msn.com','protonmail.com',
-      'ymail.com','mail.com'];
+      'aol.com','icloud.com','me.com','live.com','msn.com','protonmail.com','ymail.com','mail.com'];
 
     let currentStep = 1;
     let savedResults = {};
 
-    // ── Helpers ─────────────────────────────────────────────
+    // ── Formatting ─────────────────────────────────────────
     function fmtCurrency(n) {
-      if (n >= 1e6)  return '$' + (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
-      if (n >= 1e3)  return '$' + Math.round(n / 1000) + 'K';
+      if (n >= 1e6) return '$' + (n/1e6).toFixed(1).replace(/\.0$/,'') + 'M';
+      if (n >= 1e3) return '$' + Math.round(n/1000) + 'K';
       return '$' + Math.round(n);
     }
+    function fmtFull(n) { return '$' + Math.round(n).toLocaleString(); }
+    function fmtRoi(x)  { return Math.round(x) + '×'; }
+    function fmtPayback(m) { return m < 1 ? '< 1 month' : m < 2 ? '~1 month' : Math.round(m) + ' months'; }
 
-    function fmtFull(n) {
-      return '$' + Math.round(n).toLocaleString();
-    }
-
-    function fmtRoi(multiple) {
-      return Math.round(multiple) + '×';
-    }
-
-    function fmtPayback(months) {
-      if (months < 1) return '< 1 month';
-      if (months < 2) return '~1 month';
-      return Math.round(months) + ' months';
-    }
-
-    // ── Core calculation ────────────────────────────────────
+    // ── Calculation ────────────────────────────────────────
     function calculate() {
       const spend      = +document.getElementById('sl-spend').value * 1e6;
       const models     = +document.getElementById('sl-models').value;
       const hours      = +document.getElementById('sl-hours').value;
       const consulting = +document.getElementById('sl-consulting').value * 1e3;
-
-      const hoursSaved  = hours * TIME_REDUCTION * models * 12;
-      const timeValue   = hoursSaved * HOURLY_RATE;
-      const negSavings  = spend * NEG_UPLIFT;
-      const consultSave = consulting * CONSULT_DISP;
-      const total       = timeValue + negSavings + consultSave;
-      const roi         = total / PROCURABLE_COST;
-      const payback     = (PROCURABLE_COST / total) * 12;
-
+      const hoursSaved = hours * TIME_REDUCTION * models * 12;
+      const timeValue  = hoursSaved * HOURLY_RATE;
+      const negSavings = spend * NEG_UPLIFT;
+      const consultSave= consulting * CONSULT_DISP;
+      const total      = timeValue + negSavings + consultSave;
+      const roi        = total / PROCURABLE_COST;
+      const payback    = (PROCURABLE_COST / total) * 12;
       return { spend, models, hours, consulting, timeValue, negSavings, consultSave, total, roi, payback };
     }
 
-    // ── Slider UI updates ───────────────────────────────────
+    // ── Slider UI ──────────────────────────────────────────
     function onSlider() {
       const spend      = +document.getElementById('sl-spend').value;
       const staff      = +document.getElementById('sl-staff').value;
@@ -1526,56 +1625,44 @@
       const consulting = +document.getElementById('sl-consulting').value;
 
       document.getElementById('val-spend').textContent =
-        spend >= 1000 ? '$' + (spend / 1000).toFixed(1).replace(/\.0$/, '') + 'B' : '$' + spend + 'M';
-      document.getElementById('val-staff').textContent     = staff + ' buyer' + (staff === 1 ? '' : 's');
-      document.getElementById('val-models').textContent    = models + ' model' + (models === 1 ? '' : 's');
-      document.getElementById('val-hours').textContent     = hours + ' hr' + (hours === 1 ? '' : 's');
+        spend >= 1000 ? '$' + (spend/1000).toFixed(1).replace(/\.0$/,'') + 'B' : '$' + spend + 'M';
+      document.getElementById('val-staff').textContent     = staff + ' buyer' + (staff===1?'':'s');
+      document.getElementById('val-models').textContent    = models + ' model' + (models===1?'':'s');
+      document.getElementById('val-hours').textContent     = hours + ' hr' + (hours===1?'':'s');
       document.getElementById('val-consulting').textContent =
-        consulting === 0 ? '$0' : consulting >= 1000 ? '$' + (consulting / 1000).toFixed(1).replace(/\.0$/, '') + 'M' : '$' + consulting + 'K';
+        consulting === 0 ? '$0' : consulting >= 1000 ? '$' + (consulting/1000).toFixed(1).replace(/\.0$/,'') + 'M' : '$' + consulting + 'K';
 
-      // Update slider track fill
       ['sl-spend','sl-staff','sl-models','sl-hours','sl-consulting'].forEach(id => {
         const el = document.getElementById(id);
         const pct = ((el.value - el.min) / (el.max - el.min)) * 100;
-        el.style.background = `linear-gradient(to right, #2e86de ${pct}%, #d4dde9 ${pct}%)`;
+        el.style.background = `linear-gradient(to right, #2563eb ${pct}%, #e2dcd2 ${pct}%)`;
       });
 
-      const r = calculate();
-      document.getElementById('live-total').textContent = fmtCurrency(r.total);
+      document.getElementById('live-total').textContent = fmtCurrency(calculate().total);
     }
 
-    // ── Step navigation ─────────────────────────────────────
+    // ── Step navigation ────────────────────────────────────
     function goToStep(n) {
       document.getElementById('step-' + currentStep).style.display = 'none';
       document.getElementById('step-' + n).style.display = 'block';
-
-      // Update dots
       for (let i = 1; i <= 4; i++) {
-        const dot = document.getElementById('dot-' + i);
-        dot.className = 'roi-dot' + (i < n ? ' done' : i === n ? ' active' : '');
-        if (i < 4) {
-          document.getElementById('line-' + i).className = 'roi-line' + (i < n ? ' done' : '');
-        }
+        document.getElementById('dot-' + i).className =
+          'roi-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+        if (i < 4) document.getElementById('line-' + i).className = 'roi-line' + (i < n ? ' done' : '');
       }
-
       currentStep = n;
       document.getElementById('roi-modal').scrollTop = 0;
     }
 
     function goToTeaser() {
-      const r = calculate();
-      savedResults = r;
-
-      document.getElementById('teaser-time').textContent = fmtCurrency(r.timeValue);
+      savedResults = calculate();
+      document.getElementById('teaser-time').textContent = fmtCurrency(savedResults.timeValue);
       goToStep(2);
     }
 
-    function goToGate() {
-      goToStep(3);
-    }
+    function goToGate() { goToStep(3); }
 
     function goToResults() {
-      const nameEl  = document.getElementById('gate-name');
       const emailEl = document.getElementById('gate-email');
       const errEl   = document.getElementById('gate-error');
       const email   = emailEl.value.trim();
@@ -1586,17 +1673,14 @@
         errEl.classList.add('visible');
         return;
       }
-
       emailEl.classList.remove('error');
       errEl.classList.remove('visible');
 
-      const firstName = nameEl.value.trim() || 'there';
+      const firstName = document.getElementById('gate-name').value.trim() || 'there';
       const r = savedResults;
 
-      // Populate results
       document.getElementById('results-headline').textContent =
         "Here's what Procurable.ai is worth to you, " + firstName + ".";
-
       document.getElementById('res-time').textContent    = fmtCurrency(r.timeValue);
       document.getElementById('res-neg').textContent     = fmtCurrency(r.negSavings);
       document.getElementById('res-consult').textContent = fmtCurrency(r.consultSave);
@@ -1605,16 +1689,13 @@
       document.getElementById('res-payback').textContent = fmtPayback(r.payback);
 
       const spendLabel = r.spend >= 1e9
-        ? '$' + (r.spend / 1e9).toFixed(1).replace(/\.0$/, '') + 'B'
-        : '$' + Math.round(r.spend / 1e6) + 'M';
-
+        ? '$' + (r.spend/1e9).toFixed(1).replace(/\.0$/,'') + 'B'
+        : '$' + Math.round(r.spend/1e6) + 'M';
       document.getElementById('res-hrs').textContent   = Math.round(r.hours);
       document.getElementById('res-mods').textContent  = Math.round(r.models);
       document.getElementById('res-spend').textContent = spendLabel;
 
-      // Populate print receipt
       populatePrintReceipt(firstName, r, spendLabel);
-
       goToStep(4);
     }
 
@@ -1625,11 +1706,11 @@
       btn.textContent = (open ? '▼' : '▶') + ' View calculation methodology & assumptions';
     }
 
-    // ── Modal open/close ────────────────────────────────────
+    // ── Modal ──────────────────────────────────────────────
     function openModal() {
       document.getElementById('roi-backdrop').classList.add('open');
       document.body.style.overflow = 'hidden';
-      onSlider(); // initialise slider fills
+      onSlider();
     }
 
     function closeModal() {
@@ -1637,27 +1718,22 @@
       document.body.style.overflow = '';
     }
 
-    document.getElementById('roi-backdrop').addEventListener('click', function(e) {
-      if (e.target === this) closeModal();
+    document.getElementById('roi-backdrop').addEventListener('click', e => {
+      if (e.target === document.getElementById('roi-backdrop')) closeModal();
     });
 
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeModal();
-    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    // ── PDF print ────────────────────────────────────────────
+    // ── PDF ────────────────────────────────────────────────
     function populatePrintReceipt(firstName, r, spendLabel) {
-      const sl = document.getElementById('sl-consulting');
-      const consultRaw = +sl.value;
+      const consultRaw = +document.getElementById('sl-consulting').value;
       const consultLabel = consultRaw === 0 ? '$0'
-        : consultRaw >= 1000 ? '$' + (consultRaw / 1000).toFixed(1).replace(/\.0$/, '') + 'M'
+        : consultRaw >= 1000 ? '$' + (consultRaw/1000).toFixed(1).replace(/\.0$/,'') + 'M'
         : '$' + consultRaw + 'K';
-
       const staffVal = document.getElementById('sl-staff').value;
 
-      document.getElementById('pr-date').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+      document.getElementById('pr-date').textContent = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
       document.getElementById('pr-sub').textContent  = 'Prepared for: ' + firstName;
-
       document.getElementById('pr-inputs-table').innerHTML = `
         <tr><td>Annual Spend Under Management</td><td>${spendLabel}</td></tr>
         <tr><td>Sourcing Staff</td><td>${staffVal} buyers</td></tr>
@@ -1665,23 +1741,31 @@
         <tr><td>Avg. Modeling Time Today</td><td>${Math.round(r.hours)} hours</td></tr>
         <tr><td>External Consulting Spend</td><td>${consultLabel}/yr</td></tr>
       `;
-
       document.getElementById('pr-buckets').innerHTML = `
         <div class="pr-bucket"><div class="pr-bucket-label">Time Recovered</div><div class="pr-bucket-value">${fmtFull(r.timeValue)}</div></div>
         <div class="pr-bucket"><div class="pr-bucket-label">Negotiation Uplift</div><div class="pr-bucket-value">${fmtFull(r.negSavings)}</div></div>
         <div class="pr-bucket"><div class="pr-bucket-label">Consulting Avoided</div><div class="pr-bucket-value">${fmtFull(r.consultSave)}</div></div>
       `;
-
       document.getElementById('pr-total').textContent   = fmtFull(r.total);
       document.getElementById('pr-roi').textContent     = fmtRoi(r.roi);
       document.getElementById('pr-payback').textContent = fmtPayback(r.payback);
     }
 
-    function downloadPDF() {
-      window.print();
-    }
+    function downloadPDF() { window.print(); }
 
-    // ── Init sliders on load ─────────────────────────────────
+    // ── Nav scroll effect ──────────────────────────────────
+    window.addEventListener('scroll', () => {
+      document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ── Scroll reveal ──────────────────────────────────────
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // ── Init ───────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', onSlider);
   </script>
 
